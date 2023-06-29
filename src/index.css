@@ -77,6 +77,7 @@ h6 {
   --color-800: #075985;
   --color-900: #0c4a6e;
   --background: #082f49;
+  --gray: #94a3b8;
 }
 
 /* FONTS */
@@ -191,9 +192,9 @@ body {
 .main {
   min-height: 75vh;
   background-color: var(--color-900);
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .starting-options {
@@ -222,7 +223,7 @@ body {
   background-color: var(--color-500);
   color: var(--color-50);
   border: none;
-  font-size: 4vw;
+  font-size: 1.7rem;
   transition: all 0.3s ease;
 }
 
@@ -259,4 +260,62 @@ body {
   font-size: 2rem;
   text-align: center;
   color: var(--color-50);
+}
+
+/* CURRENT CONDITIONS */
+
+.current-conditions {
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.current-conditions_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.current-conditions_header p {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--gray);
+}
+
+.current-conditions_main {
+  border-top: 1px solid var(--gray);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2rem 0;
+}
+
+.current-conditions_main-temp h3 {
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--color-200);
+}
+
+.current-conditions_main-temp h4 {
+  font-size: 400;
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #94a3b8;
+}
+
+.current-conditions_details {
+  padding: 1rem 0;
+  border-top: 1px solid var(--gray);
+}
+
+.current-conditions_details h5 {
+  font-size: 1.6rem;
+  text-transform: lowercase;
+  font-family: monospace;
+  color: #e2e8f0;
 }
