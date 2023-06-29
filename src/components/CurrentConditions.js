@@ -1,3 +1,7 @@
+import UpArrow from "../icons/UpArrow";
+import DownArrow from "../icons/DownArrow";
+import PaperAirplane from "../icons/PaperAirplaneIcon";
+
 export default function CurrentConditions({
   temp,
   temp_max,
@@ -26,12 +30,15 @@ export default function CurrentConditions({
       </div>
       <div className="current-conditions_details">
         <h5>
+          <UpArrow />
           Max temp today: {Math.round(temp_max)}°{unit === true ? "C" : "F"}
         </h5>
         <h5>
+          <DownArrow />
           Min temp today: {Math.round(temp_min)}°{unit === true ? "C" : "F"}
         </h5>
         <h5>
+          <PaperAirplane />
           wind {Math.round(wind)} {unit === true ? "km/h" : "mil/h"}{" "}
         </h5>
       </div>

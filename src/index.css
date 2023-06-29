@@ -169,7 +169,7 @@ body {
 }
 
 .input-form input {
-  width: 60vw;
+  width: auto;
   background-color: rgb(139, 139, 139, 0.6);
   border: none;
   padding: 0.4rem;
@@ -177,8 +177,12 @@ body {
   border-radius: 0.2rem;
   font-size: 2rem;
   font-weight: 900;
-  color: var(--color-50);
+  color: var(--color-100);
   outline: none;
+}
+
+.input-form input::placeholder {
+  color: var(--gray);
 }
 
 .input-form svg {
@@ -198,33 +202,49 @@ body {
 }
 
 .starting-options {
+  padding: 0 0.5rem;
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
 }
 
-.starting-options img {
-  width: 25rem;
+.starting-options svg {
+  width: 20rem;
+  color: var(--color-400);
+  animation: rotate 20s ease infinite;
 }
 
 .btn-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 3rem;
 }
 
 .btn {
   padding: 0.75rem 0.5rem;
-  border-radius: 2rem;
+  border-radius: 0.25rem;
   cursor: pointer;
   background-color: var(--color-500);
   color: var(--color-50);
   border: none;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   transition: all 0.3s ease;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-icon svg {
+  width: 2.5rem;
+  color: white !important;
+  animation: none !important;
 }
 
 .btn:hover {
@@ -256,10 +276,25 @@ body {
   width: 25rem;
 }
 
-.loading {
+.loader {
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loader p {
   font-size: 2rem;
   text-align: center;
   color: var(--color-50);
+}
+
+.loader svg {
+  width: 5rem;
+  color: var(--color-400);
+  animation: rotate 10s ease infinite;
 }
 
 /* CURRENT CONDITIONS */
@@ -311,11 +346,115 @@ body {
 .current-conditions_details {
   padding: 1rem 0;
   border-top: 1px solid var(--gray);
+  border-bottom: 1px solid var(--gray);
 }
 
 .current-conditions_details h5 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.6rem;
   text-transform: lowercase;
   font-family: monospace;
   color: #e2e8f0;
+  padding: 0.3rem 0;
+}
+
+.current-conditions_details h5 svg {
+  width: 2rem;
+}
+
+/* 7 DAY FORECAST */
+
+.hoursForecast_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.hoursForecast_container h3 {
+  font-size: 1.7rem;
+  text-align: center;
+  color: var(--color-50);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.hoursForecast_row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+}
+
+.hourly_forecast {
+  border-top: 1px solid var(--gray);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.hourly_forecast div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hourly_forecast p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--gray);
+}
+
+.hourly_forecast img {
+  width: 5rem;
+}
+
+.hourly_forecast h5 {
+  font-size: 2rem;
+  color: var(--color-50);
+}
+
+/* ANIMATIONS */
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* RESPONSIVE */
+
+@media (min-width: 700px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  body {
+    width: 60vw;
+  }
+}
+
+@media (min-width: 1800px) {
+  body {
+    width: 40vw;
+  }
 }

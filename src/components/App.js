@@ -5,6 +5,7 @@ import StartOptions from "./StartOptions";
 import Error from "./Error";
 import Loader from "./Loader";
 import CurrentConditions from "./CurrentConditions";
+import NextHoursForecast from "./NextHoursForecast.js";
 
 const API_KEY = "f3ccfe33458ba60b1cce26a18d90b1bc";
 
@@ -22,6 +23,10 @@ const initialState = {
     description: "",
     icon: "",
   },
+  showNextHoursForecasts: false,
+  hoursForecastStartDate: "",
+  hoursForecastFinishDate: "",
+  hoursForecast: [],
 };
 
 function reducer(state, action) {
@@ -38,16 +43,36 @@ function reducer(state, action) {
         location: action.payload.location,
         currentConditions: action.payload.currentConditions,
       };
+    case "fetchNextHoursForecast":
+      return { ...state, showNextHoursForecasts: true };
+    case "setHoursForecast":
+      return {
+        ...state,
+        hoursForecastStartDate: action.payload.hoursForecastStartDate,
+        hoursForecastFinishDate: action.payload.hoursForecastFinishDate,
+        hoursForecast: action.payload.hoursForecast,
+      };
     default:
       throw new Error("Action not supported");
   }
 }
 
 function App() {
-  const [{ unit, city, lat, lng, currentConditions, location }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    {
+      unit,
+      city,
+      lat,
+      lng,
+      currentConditions,
+      location,
+      showNextHoursForecasts,
+      hoursForecastStartDate,
+      hoursForecastFinishDate,
+      hoursForecast,
+    },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const searchBar = useRef(null);
@@ -148,6 +173,49 @@ function App() {
     };
   }, [lat, lng, unit, dispatch]);
 
+  useEffect(() => {
+    if (!showNextHoursForecasts) return;
+    const abortController = new AbortController();
+
+    async function fetchNextDaysForecast() {
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&units=${
+            unit ? "metric" : "imperial"
+          }&appid=${API_KEY}`,
+          { signal: abortController.signal }
+        );
+        const data = await res.json();
+        const dataParsed = data.list.map((el) => {
+          return {
+            date: el.dt_txt,
+            temp: Math.round(el.main.temp),
+            description: el.weather[0].description,
+            icon: el.weather[0].icon,
+            unit: unit === true ? "C" : "F",
+          };
+        });
+        const startDate = dataParsed[0].date;
+        const finishDate = dataParsed[dataParsed.length - 1].date;
+        dispatch({
+          type: "setHoursForecast",
+          payload: {
+            hoursForecastStartDate: startDate,
+            hoursForecastFinishDate: finishDate,
+            hoursForecast: dataParsed,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+        setError("Cannot get the next 7 days forecast!");
+      }
+    }
+
+    fetchNextDaysForecast();
+
+    return () => abortController.abort();
+  }, [showNextHoursForecasts, lat, lng, unit]);
+
   return (
     <>
       <Header
@@ -162,17 +230,26 @@ function App() {
         )}
         {error && <Error error={error} onTryAgainCallback={() => setError("")} />}
         {isLoading && <Loader />}
-        {location && (
-          <CurrentConditions
-            description={currentConditions.description}
-            icon={currentConditions.icon}
-            location={location}
-            temp={currentConditions.temp}
-            temp_max={currentConditions.temp_max}
-            temp_min={currentConditions.temp_min}
-            unit={unit}
-            wind={currentConditions.wind}
-          />
+        {location && !isLoading && !error && (
+          <>
+            <CurrentConditions
+              description={currentConditions.description}
+              icon={currentConditions.icon}
+              location={location}
+              temp={currentConditions.temp}
+              temp_max={currentConditions.temp_max}
+              temp_min={currentConditions.temp_min}
+              unit={unit}
+              wind={currentConditions.wind}
+            />
+            <NextHoursForecast
+              showNextHoursForecasts={showNextHoursForecasts}
+              dispatch={dispatch}
+              hoursForecast={hoursForecast}
+              hoursForecastStartDate={hoursForecastStartDate}
+              hoursForecastFinishDate={hoursForecastFinishDate}
+            />
+          </>
         )}
       </Main>
     </>

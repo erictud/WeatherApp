@@ -7,6 +7,7 @@ export default function Header({ isCelsiusActive, dispatch, searchBarRef, onSetC
     e.preventDefault();
     const city = location.trim();
     onSetCityAndCountry(city);
+    setLocation("");
   };
 
   return (
