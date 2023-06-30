@@ -1,10 +1,11 @@
-import errorBanner from "../assets/error-banner.png";
-
+import ErrorSign from "../icons/ErrorSign";
 export default function Error({ error, onTryAgainCallback }) {
   return (
     <div className="error-container">
-      <img src={errorBanner} alt="error banner" />
-      <h3>{error}</h3>
+      <div>
+        <ErrorSign />
+        <h3>{error}</h3>
+      </div>
       <button className="btn" onClick={onTryAgainCallback}>
         Try again
       </button>

@@ -22,6 +22,8 @@ const initialState = {
     wind: 0,
     description: "",
     icon: "",
+    sunrise: "",
+    sunset: "",
   },
   showNextHoursForecasts: false,
   hoursForecastStartDate: "",
@@ -45,6 +47,8 @@ function reducer(state, action) {
       };
     case "fetchNextHoursForecast":
       return { ...state, showNextHoursForecasts: true };
+    case "startNewSearch":
+      return { ...initialState };
     case "setHoursForecast":
       return {
         ...state,
@@ -112,14 +116,17 @@ function App() {
     async function fetchData() {
       try {
         setIsLoading(true);
-        const res = await fetch(`https://geocode.xyz/${city.replace(" ", "")}?json=1`, {
-          signal: abortController.signal,
-        });
+        const res = await fetch(
+          `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${API_KEY}`,
+          {
+            signal: abortController.signal,
+          }
+        );
         const data = await res.json();
-        const { latt: lat, longt: lng } = data;
+        const { lat, lon: lng } = data[0];
         dispatch({ type: "setCoords", payload: { lat, lng } });
       } catch (err) {
-        setError("The city was not found!");
+        setError("Location not found!");
       } finally {
         setIsLoading(false);
       }
@@ -150,13 +157,21 @@ function App() {
         const {
           main: { temp, temp_max, temp_min },
           name,
-          sys: { country },
+          sys: { country, sunrise: srise, sunset: sset },
           weather,
           wind: { speed },
         } = data;
-        console.log(data);
         const { description, icon } = weather[0];
-        const currentConditions = { temp, temp_max, temp_min, description, icon, wind: speed };
+        const currentConditions = {
+          temp,
+          temp_max,
+          temp_min,
+          description,
+          icon,
+          wind: speed,
+          sunrise: srise * 1000,
+          sunset: sset * 1000,
+        };
         const location = `${name}, ${country}`;
         dispatch({ type: "setCurrentConditions", payload: { currentConditions, location } });
       } catch (err) {
@@ -241,6 +256,8 @@ function App() {
               temp_min={currentConditions.temp_min}
               unit={unit}
               wind={currentConditions.wind}
+              sunrise={currentConditions.sunrise}
+              sunset={currentConditions.sunset}
             />
             <NextHoursForecast
               showNextHoursForecasts={showNextHoursForecasts}

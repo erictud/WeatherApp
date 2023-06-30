@@ -1,6 +1,8 @@
 import UpArrow from "../icons/UpArrow";
 import DownArrow from "../icons/DownArrow";
 import PaperAirplane from "../icons/PaperAirplaneIcon";
+import SunIcon from "../icons/SunIcon";
+import CloudIcon from "../icons/CloudIcon";
 
 export default function CurrentConditions({
   temp,
@@ -11,8 +13,13 @@ export default function CurrentConditions({
   location,
   unit,
   wind,
+  sunrise,
+  sunset,
 }) {
   const date = new Date();
+  const sunriseDate = new Date(sunrise);
+  const sunsetDate = new Date(sunset);
+
   return (
     <div className="current-conditions">
       <div className="current-conditions_header">
@@ -40,6 +47,19 @@ export default function CurrentConditions({
         <h5>
           <PaperAirplane />
           wind {Math.round(wind)} {unit === true ? "km/h" : "mil/h"}{" "}
+        </h5>
+        <h5>
+          <SunIcon />
+          sunrise{" "}
+          {sunriseDate.getHours() <= 9 ? `0${sunriseDate.getHours()}` : sunriseDate.getHours}:
+          {sunriseDate.getMinutes() <= 9
+            ? `0 ${sunriseDate.getMinutes()}`
+            : sunriseDate.getMinutes()}
+        </h5>
+        <h5>
+          <CloudIcon />
+          sunset {sunsetDate.getHours() <= 9 ? `0${sunsetDate.getHours()}` : sunsetDate.getHours()}:
+          {sunsetDate.getMinutes() <= 9 ? `0${sunsetDate.getMinutes()}` : sunsetDate.getMinutes()}
         </h5>
       </div>
     </div>

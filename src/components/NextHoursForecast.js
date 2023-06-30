@@ -3,13 +3,10 @@ import HourlyForecastDetail from "./HourlyForecastDetail";
 
 export default function NextHoursForecast({
   dispatch,
-  showNextHoursForecasts,
   hoursForecast,
   hoursForecastStartDate,
   hoursForecastFinishDate,
 }) {
-  console.log(hoursForecast);
-
   return (
     <div className="hoursForecast_container">
       {hoursForecast.length > 0 ? (
@@ -25,9 +22,9 @@ export default function NextHoursForecast({
             to{" "}
             {new Intl.DateTimeFormat("en", {
               hour: `numeric`,
-              // day: `numeric`,
+              day: `numeric`,
               month: `long`,
-              weekday: `long`,
+              //weekday: `long`,
             }).format(new Date(hoursForecastFinishDate))}
           </h3>
           <div className="hoursForecast_row">

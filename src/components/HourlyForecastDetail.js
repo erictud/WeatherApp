@@ -1,17 +1,18 @@
 export default function HourlyForecastDetail({ date, icon, description, temp, unit }) {
   const curDate = new Date(date);
+  const weekday = ["Sun", "Mon", "Tu", "Wed", "Thu", "Fri", "Sat"];
   return (
-    <div className="hourly_forecast">
+    <div className={`hourly_forecast ${+curDate.getHours() >= 21 ? "border-right" : ""}`}>
+      <p>
+        {weekday[curDate.getDay()]} {curDate.getHours()}:00
+      </p>
       <div>
-        <p>
-          {curDate.getDate()}.{curDate.getMonth()} | {curDate.getHours()}:00
-        </p>
         <img src={`../weather-icons/${icon}.png`} alt={description} />
-        <p>{description}</p>
+        <h5>
+          {temp}°{unit}
+        </h5>
       </div>
-      <h5>
-        {temp}°{unit}
-      </h5>
+      <p>{description}</p>
     </div>
   );
 }
