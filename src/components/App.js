@@ -269,6 +269,7 @@ function App() {
           </>
         )}
       </Main>
+      <p className="credits">App made by Tudorica Eric</p>
     </>
   );
 }

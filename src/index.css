@@ -460,6 +460,12 @@ body {
   color: var(--color-50);
 }
 
+.credits {
+  text-align: center;
+  color: var(--gray);
+  font-size: 1.6rem;
+}
+
 /* ANIMATIONS */
 
 @keyframes rotate {
